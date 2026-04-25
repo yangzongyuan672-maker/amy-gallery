@@ -1,0 +1,21 @@
+1. 打开 artworks 文件夹，把新照片放进去。
+
+2. 建议照片命名：
+amy-年-月-日-序号.jpg
+
+例如：
+amy-2026-04-25-06.jpg
+
+3. 右键 script.js，选择“编辑”或“用记事本打开”。
+
+4. 在 artworks 列表里复制一组作品信息，再修改：
+title：标题
+date：日期
+medium：材料
+category：分类，可用 study / color / line
+image：照片路径
+note：备注
+
+5. 保存 script.js，然后重新打开 打开画展.bat。
+
+不要双击 script.js。双击它会出现 Windows Script Host 报错。

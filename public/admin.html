@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Amy | 上传作品</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="admin-page">
+    <main class="admin-shell">
+      <section class="admin-hero">
+        <a class="admin-back" href="/">返回画展</a>
+        <p class="kicker">Private Upload</p>
+        <h1>上传 Amy 的新作品</h1>
+        <p>选择照片后，网站会自动保存、改名，并把作品加入首页。配置 OpenAI API Key 后，还会自动生成标题和说明。</p>
+      </section>
+
+      <section class="admin-panel" aria-label="上传表单">
+        <label>
+          管理密码
+          <input id="password" type="password" autocomplete="current-password" placeholder="输入 Railway 里设置的 ADMIN_PASSWORD">
+        </label>
+
+        <label>
+          选择照片
+          <input id="files" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+        </label>
+
+        <button class="upload-button" id="uploadButton" type="button">上传并加入画展</button>
+        <p class="admin-status" id="status" role="status"></p>
+      </section>
+
+      <section class="admin-list">
+        <div class="section-heading">
+          <p class="kicker">Current Archive</p>
+          <h2>现有作品</h2>
+        </div>
+        <div id="artworkList" class="admin-artworks"></div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

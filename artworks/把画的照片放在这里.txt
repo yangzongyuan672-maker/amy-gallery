@@ -1,0 +1,8 @@
+把 Amy 的画作照片放在这个文件夹。
+
+例如：
+amy-2026-04-25.jpg
+amy-2026-04-26.png
+
+然后在上一级的 script.js 里把 image 改成：
+"artworks/amy-2026-04-25.jpg"

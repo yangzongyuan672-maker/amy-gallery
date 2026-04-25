@@ -1,0 +1,36 @@
+Railway 部署步骤
+
+1. 把整个“画展”文件夹上传到一个 GitHub 仓库。
+
+2. 打开 Railway，选择 New Project。
+
+3. 选择 Deploy from GitHub repo，选中这个仓库。
+
+4. Railway 会自动识别 package.json，并运行：
+npm start
+
+5. 在 Railway 项目里添加环境变量：
+ADMIN_PASSWORD=你自己的上传密码
+OPENAI_API_KEY=你的 OpenAI API Key
+OPENAI_MODEL=gpt-4o-mini
+
+OPENAI_API_KEY 可以先不填。不填时，网站也能上传、改名、加入画展，只是说明会用固定模板。
+
+6. 添加 Volume。
+建议挂载路径：
+/app/data
+
+这个很重要。上传后的照片和 artworks.json 都保存在这里。没有 Volume 的话，重新部署后新上传的照片可能会丢。
+
+7. 在 Railway 的 Settings 或 Networking 里 Generate Domain。
+
+8. 访问：
+https://你的域名/
+
+上传入口：
+https://你的域名/admin.html
+
+9. 上传入口输入 ADMIN_PASSWORD，然后选择照片上传。
+
+以后使用方式：
+只要把照片从后台传上去，网站会自动改名、加入首页，并在配置 OpenAI API Key 后自动写标题和说明。

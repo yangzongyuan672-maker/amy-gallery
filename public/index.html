@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Amy | Works on Paper</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header" aria-label="Amy 作品展">
+      <nav class="topbar">
+        <a class="brand" href="#top" aria-label="返回首页">Amy</a>
+        <div class="nav-links" aria-label="页面导航">
+          <a href="#collection">作品</a>
+          <a href="#journal">记录</a>
+          <a href="#about">关于</a>
+          <a href="/admin.html">上传</a>
+        </div>
+      </nav>
+
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="kicker">Private Online Exhibition</p>
+          <h1>Works on Paper</h1>
+          <p class="intro">
+            A quiet archive of Amy's daily drawings, studies, and visual ideas.
+          </p>
+        </div>
+        <div class="hero-panel" aria-label="展览信息">
+          <span>2026</span>
+          <strong>Daily Drawing Archive</strong>
+          <small>Curated at home</small>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="section collection-section" id="collection">
+        <div class="section-heading">
+          <p class="kicker">Selected Works</p>
+          <h2>作品陈列</h2>
+        </div>
+
+        <div class="filter-row" aria-label="作品筛选">
+          <button class="filter-button active" type="button" data-filter="all">全部</button>
+          <button class="filter-button" type="button" data-filter="study">习作</button>
+          <button class="filter-button" type="button" data-filter="color">色彩</button>
+          <button class="filter-button" type="button" data-filter="line">线条</button>
+        </div>
+
+        <div class="gallery-grid" id="gallery" aria-live="polite">
+          <p class="loading-text">正在加载作品...</p>
+        </div>
+      </section>
+
+      <section class="section journal-section" id="journal">
+        <div class="journal-copy">
+          <p class="kicker">Journal</p>
+          <h2>成长记录</h2>
+          <p>
+            这里可以慢慢记录每一天的作品，不需要写得很长。一句话、一个日期、一个当时的想法，就会变成很珍贵的线索。
+          </p>
+        </div>
+        <div class="journal-list" aria-label="最近记录">
+          <article>
+            <span>01</span>
+            <p>把每天的画按日期留下来，能看到风格、耐心和观察力的变化。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <p>每张作品都可以标记材料，比如铅笔、水彩、马克笔、数码绘画。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <p>以后可以按月份整理成不同展览，像一本持续更新的个人作品集。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section about-section" id="about">
+        <p class="kicker">About The Artist</p>
+        <h2>Amy</h2>
+        <p>
+          14 岁。正在用画画观察世界，也在用自己的节奏建立一份长期作品档案。
+        </p>
+      </section>
+    </main>
+
+    <div class="modal" id="artModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" aria-label="关闭作品详情">&times;</button>
+      <div class="modal-card">
+        <div class="modal-image-wrap">
+          <img id="modalImage" alt="">
+        </div>
+        <div class="modal-copy">
+          <p class="kicker" id="modalDate"></p>
+          <h3 id="modalTitle"></h3>
+          <p id="modalMedium"></p>
+          <p id="modalNote"></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="gallery.js"></script>
+  </body>
+</html>
