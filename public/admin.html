@@ -22,12 +22,20 @@
         </label>
 
         <label>
+          作者
+          <select id="artist">
+            <option value="amy">Amy</option>
+            <option value="nancy">Nancy</option>
+          </select>
+        </label>
+
+        <label>
           选择照片
           <input id="files" type="file" accept="image/jpeg,image/png,image/webp" multiple>
         </label>
 
         <button class="upload-button" id="uploadButton" type="button">上传并加入画展</button>
-        <p class="admin-status" id="status" role="status"></p>
+        <p class="admin-status" id="status" role="status">密码会保存在当前浏览器，下次打开不用重复输入。</p>
       </section>
 
       <section class="admin-list">

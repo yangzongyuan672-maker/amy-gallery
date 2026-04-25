@@ -1,10 +1,12 @@
 const passwordInput = document.querySelector("#password");
+const artistInput = document.querySelector("#artist");
 const filesInput = document.querySelector("#files");
 const uploadButton = document.querySelector("#uploadButton");
 const statusText = document.querySelector("#status");
 const artworkList = document.querySelector("#artworkList");
 
 passwordInput.value = localStorage.getItem("amyAdminPassword") || "";
+artistInput.value = localStorage.getItem("amySelectedArtist") || "amy";
 
 uploadButton.addEventListener("click", async () => {
   const password = passwordInput.value.trim();
@@ -21,7 +23,9 @@ uploadButton.addEventListener("click", async () => {
   }
 
   localStorage.setItem("amyAdminPassword", password);
+  localStorage.setItem("amySelectedArtist", artistInput.value);
   const formData = new FormData();
+  formData.append("artist", artistInput.value);
   files.forEach((file) => formData.append("artworks", file));
 
   uploadButton.disabled = true;
@@ -66,7 +70,7 @@ function renderArtworks(artworks) {
       <img src="${artwork.image}" alt="${escapeHtml(artwork.title)}">
       <div>
         <h3>${escapeHtml(artwork.title)}</h3>
-        <p>${escapeHtml(artwork.date)} · ${escapeHtml(artwork.medium)}</p>
+        <p>${artistName(artwork.artist)} · ${escapeHtml(artwork.date)} · ${escapeHtml(artwork.medium)}</p>
         <small>${escapeHtml(artwork.note)}</small>
       </div>
     </article>
@@ -84,6 +88,10 @@ function escapeHtml(value) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function artistName(value) {
+  return value === "nancy" || value === "mom" ? "Nancy" : "Amy";
 }
 
 loadArtworks();

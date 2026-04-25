@@ -11,6 +11,7 @@
       <nav class="topbar">
         <a class="brand" href="#top" aria-label="返回首页">Amy</a>
         <div class="nav-links" aria-label="页面导航">
+          <a href="#artists">作者</a>
           <a href="#collection">作品</a>
           <a href="#journal">记录</a>
           <a href="#about">关于</a>
@@ -35,21 +36,68 @@
     </header>
 
     <main>
+      <section class="section artist-section" id="artists">
+        <div class="section-heading">
+          <p class="kicker">Two Studios</p>
+          <h2>两个展厅</h2>
+        </div>
+        <div class="artist-grid">
+          <a class="artist-card amy-card" href="#collection" data-artist-link="amy">
+            <span>Amy</span>
+            <strong>Daily Drawing Archive</strong>
+            <small>人物、线条、角色练习</small>
+          </a>
+          <a class="artist-card nancy-card" href="#collection" data-artist-link="nancy">
+            <span>Nancy</span>
+            <strong>Works from Home Studio</strong>
+            <small>纸本、色彩、生活观察</small>
+          </a>
+        </div>
+      </section>
+
       <section class="section collection-section" id="collection">
         <div class="section-heading">
           <p class="kicker">Selected Works</p>
-          <h2>作品陈列</h2>
+          <h2>作品墙</h2>
+        </div>
+
+        <div class="filter-row artist-filters" aria-label="作者筛选">
+          <button class="filter-button active" type="button" data-artist="all">全部作者</button>
+          <button class="filter-button" type="button" data-artist="amy">Amy</button>
+          <button class="filter-button" type="button" data-artist="nancy">Nancy</button>
         </div>
 
         <div class="filter-row" aria-label="作品筛选">
-          <button class="filter-button active" type="button" data-filter="all">全部</button>
-          <button class="filter-button" type="button" data-filter="study">习作</button>
-          <button class="filter-button" type="button" data-filter="color">色彩</button>
-          <button class="filter-button" type="button" data-filter="line">线条</button>
+          <button class="filter-button active" type="button" data-category="all">全部作品</button>
+          <button class="filter-button" type="button" data-category="study">习作</button>
+          <button class="filter-button" type="button" data-category="color">色彩</button>
+          <button class="filter-button" type="button" data-category="line">线条</button>
+        </div>
+
+        <div class="collection-tools">
+          <p id="collectionCount">正在加载作品...</p>
+          <button class="load-button" id="loadMoreButton" type="button">加载更多</button>
         </div>
 
         <div class="gallery-grid" id="gallery" aria-live="polite">
           <p class="loading-text">正在加载作品...</p>
+        </div>
+      </section>
+
+      <section class="section profile-section" id="about">
+        <div class="section-heading">
+          <p class="kicker">Artists</p>
+          <h2>作者简介</h2>
+        </div>
+        <div class="profile-grid">
+          <article>
+            <span>Amy</span>
+            <p>14 岁。正在用画画观察人物、情绪和角色，也在建立一份长期作品档案。</p>
+          </article>
+          <article>
+            <span>Nancy</span>
+            <p>喜欢画画，也把日常里的观察、心情和审美慢慢留在纸上。</p>
+          </article>
         </div>
       </section>
 
@@ -58,32 +106,36 @@
           <p class="kicker">Journal</p>
           <h2>成长记录</h2>
           <p>
-            这里可以慢慢记录每一天的作品，不需要写得很长。一句话、一个日期、一个当时的想法，就会变成很珍贵的线索。
+            这里记录的不只是作品，也是一家人持续创作的痕迹。每一次上传都会成为这个线上展厅的一部分。
           </p>
         </div>
         <div class="journal-list" aria-label="最近记录">
           <article>
             <span>01</span>
-            <p>把每天的画按日期留下来，能看到风格、耐心和观察力的变化。</p>
+            <p>作品可以按作者浏览，也可以混合观看，像一场家庭里的双人联展。</p>
           </article>
           <article>
             <span>02</span>
-            <p>每张作品都可以标记材料，比如铅笔、水彩、马克笔、数码绘画。</p>
+            <p>作品多起来后，首页会先显示一部分，想继续看再加载更多，不用一次滑到底。</p>
           </article>
           <article>
             <span>03</span>
-            <p>以后可以按月份整理成不同展览，像一本持续更新的个人作品集。</p>
+            <p>上传入口会记住管理密码，下次在同一台设备和浏览器里打开时不用重复输入。</p>
           </article>
         </div>
       </section>
 
-      <section class="section about-section" id="about">
-        <p class="kicker">About The Artist</p>
-        <h2>Amy</h2>
-        <p>
-          14 岁。正在用画画观察世界，也在用自己的节奏建立一份长期作品档案。
-        </p>
-      </section>
+      <!--
+        Legacy static controls kept out of the page intentionally.
+      -->
+      <template id="legacy-controls">
+        <div class="filter-row">
+          <button class="filter-button" type="button" data-filter="all">全部</button>
+          <button class="filter-button" type="button" data-filter="study">习作</button>
+          <button class="filter-button" type="button" data-filter="color">色彩</button>
+          <button class="filter-button" type="button" data-filter="line">线条</button>
+        </div>
+      </template>
     </main>
 
     <div class="modal" id="artModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">

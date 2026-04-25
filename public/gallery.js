@@ -1,7 +1,14 @@
 let artworks = [];
+let selectedArtist = "all";
+let selectedCategory = "all";
+let visibleCount = 12;
 
 const gallery = document.querySelector("#gallery");
-const filterButtons = document.querySelectorAll(".filter-button");
+const artistButtons = document.querySelectorAll("[data-artist]");
+const categoryButtons = document.querySelectorAll("[data-category]");
+const artistLinks = document.querySelectorAll("[data-artist-link]");
+const collectionCount = document.querySelector("#collectionCount");
+const loadMoreButton = document.querySelector("#loadMoreButton");
 const modal = document.querySelector("#artModal");
 const modalImage = document.querySelector("#modalImage");
 const modalTitle = document.querySelector("#modalTitle");
@@ -14,7 +21,7 @@ async function loadArtworks() {
   try {
     const response = await fetch("/api/artworks");
     if (!response.ok) throw new Error("Failed to load artworks");
-    artworks = await response.json();
+    artworks = (await response.json()).map((artwork) => ({ artist: "amy", ...artwork }));
     renderGallery();
   } catch (error) {
     gallery.innerHTML = `<p class="loading-text">作品暂时没有加载成功，请稍后刷新。</p>`;
@@ -22,10 +29,16 @@ async function loadArtworks() {
   }
 }
 
-function renderGallery(filter = "all") {
-  const visibleArtworks = filter === "all"
-    ? artworks
-    : artworks.filter((artwork) => artwork.category === filter);
+function renderGallery() {
+  const filteredArtworks = artworks.filter((artwork) => {
+    const artistMatch = selectedArtist === "all" || artwork.artist === selectedArtist;
+    const categoryMatch = selectedCategory === "all" || artwork.category === selectedCategory;
+    return artistMatch && categoryMatch;
+  });
+  const visibleArtworks = filteredArtworks.slice(0, visibleCount);
+
+  collectionCount.textContent = `共 ${filteredArtworks.length} 张作品，当前显示 ${visibleArtworks.length} 张`;
+  loadMoreButton.hidden = visibleArtworks.length >= filteredArtworks.length;
 
   if (!visibleArtworks.length) {
     gallery.innerHTML = `<p class="loading-text">这个分类暂时还没有作品。</p>`;
@@ -80,12 +93,37 @@ gallery.addEventListener("click", (event) => {
   openModal(artworks[Number(card.dataset.index)]);
 });
 
-filterButtons.forEach((button) => {
+artistButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    filterButtons.forEach((item) => item.classList.remove("active"));
+    artistButtons.forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
-    renderGallery(button.dataset.filter);
+    selectedArtist = button.dataset.artist;
+    visibleCount = 12;
+    renderGallery();
   });
+});
+
+categoryButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    categoryButtons.forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    selectedCategory = button.dataset.category;
+    visibleCount = 12;
+    renderGallery();
+  });
+});
+
+artistLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    const artist = link.dataset.artistLink;
+    const button = document.querySelector(`[data-artist="${artist}"]`);
+    if (button) button.click();
+  });
+});
+
+loadMoreButton.addEventListener("click", () => {
+  visibleCount += 12;
+  renderGallery();
 });
 
 modalClose.addEventListener("click", closeModal);

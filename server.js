@@ -53,13 +53,15 @@ app.post("/api/admin/upload", requireAdmin, upload.array("artworks", 12), async 
 
   for (const file of req.files || []) {
     const createdAt = new Date();
-    const filename = await nextFilename(createdAt, file.originalname);
+    const artist = normalizeArtist(req.body.artist);
+    const filename = await nextFilename(createdAt, file.originalname, artist);
     const finalPath = path.join(uploadDir, filename);
     await fs.rename(file.path, finalPath);
 
-    const description = await describeArtwork(finalPath, file.mimetype, artworks.length + uploaded.length + 1);
+    const description = await describeArtwork(finalPath, file.mimetype, artworks.length + uploaded.length + 1, artist);
     const artwork = {
       id: cryptoRandomId(),
+      artist,
       title: description.title,
       date: formatDisplayDate(createdAt),
       medium: description.medium,
@@ -105,7 +107,9 @@ async function initStorage() {
 
 async function readArtworks() {
   const artworks = await readJsonIfExists(artworksFile);
-  return Array.isArray(artworks) ? artworks : [];
+  return Array.isArray(artworks)
+    ? artworks.map((artwork) => ({ artist: "amy", ...artwork }))
+    : [];
 }
 
 async function writeArtworks(artworks) {
@@ -140,11 +144,11 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-async function nextFilename(date, originalName) {
+async function nextFilename(date, originalName, artist) {
   const ext = safeExtension(originalName);
   const day = formatFileDate(date);
   const files = await fs.readdir(uploadDir).catch(() => []);
-  const prefix = `amy-${day}-`;
+  const prefix = `${artist}-${day}-`;
   const existingNumbers = files
     .filter((name) => name.startsWith(prefix))
     .map((name) => Number(name.slice(prefix.length, prefix.length + 2)))
@@ -161,11 +165,12 @@ function safeExtension(originalName) {
   return ".jpg";
 }
 
-async function describeArtwork(filePath, mimetype, index) {
+async function describeArtwork(filePath, mimetype, index, artist) {
   if (!openai) return fallbackDescription(index);
 
   try {
     const image = await fileToDataUrl(filePath, mimetype);
+    const artistName = artist === "nancy" ? "Nancy" : "Amy";
     const response = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || "gpt-4o-mini",
       response_format: { type: "json_object" },
@@ -179,7 +184,7 @@ async function describeArtwork(filePath, mimetype, index) {
           content: [
             {
               type: "text",
-              text: "请根据这张画生成 JSON：title 字段是简短中文标题；medium 字段从铅笔素描、针管笔与彩铅、纸上绘画、角色设定稿中选择或自行简短判断；category 字段只能是 study、color、line 三者之一；note 字段写 45-80 字中文说明，像画展展签，关注线条、人物、构图或创作练习。"
+              text: `这张画的作者是 ${artistName}。请根据这张画生成 JSON：title 字段是简短中文标题；medium 字段从铅笔素描、针管笔与彩铅、纸上绘画、角色设定稿、纸本绘画、水彩、综合材料中选择或自行简短判断；category 字段只能是 study、color、line 三者之一；note 字段写 45-80 字中文说明，像画展展签，关注线条、人物、构图、色彩或创作练习。`
             },
             {
               type: "image_url",
@@ -232,6 +237,10 @@ function fallbackDescription(index) {
     category: "study",
     note: "这张作品已自动加入 Amy 的画展档案。可以看到她在人物、线条和画面关系上的持续练习。"
   };
+}
+
+function normalizeArtist(value) {
+  return value === "nancy" || value === "mom" ? "nancy" : "amy";
 }
 
 function formatFileDate(date) {
